@@ -7,7 +7,25 @@
 </head>
 <body>
 	<script type="text/javascript">
-		In.add('mod1',{path:''});
+		In.add('jquery',{path:'http://code.jquery.com/jquery-1.5.2.js',type:'js',charset:'utf-8'});
+		In.add('a',{path:'demo-files/a.js',type:'js',charset:'utf-8',rely:['d']});
+		In.add('b',{path:'demo-files/b.js',type:'js',charset:'utf-8',rely:['c']});
+		In.add('c',{path:'demo-files/c.js',type:'js',charset:'utf-8',rely:['a']});
+		In.add('d',{path:'demo-files/d.js',type:'js',charset:'utf-8'});
+		In.add('e',{path:'demo-files/e.js',charset:'utf-8',rely:['jquery']});
+		In.add('f',{path:'demo-files/f.js'});
+		In.add('g',{path:'demo-files/g.css',rely:['f']});
+		In.add('h',{path:'demo-files/h.css'});
+		
+		In('d','g','a','jquery','e','d','f','d',function() {alert('test1...')},'b',function() {alert('test2...')});
+		In('h',function() {alert('im thread 2...')});
+		/*
+			notes:
+			--------------------------------------------------------------------------------------------------------------------------
+			relations: 		d -> g(f) -> a(d) -> jquery -> e(jquery) -> d -> f -> d -> function -> b(c(a(d))) -> function
+			blahlist: 		d -> f -> g -> d -> a -> jquery -> jquery -> e -> d -> f -> d -> function -> d -> a -> c -> b -> function
+			loading list: 	d -> f -> g -> d -> a -> jquery -> e -> function -> c -> b -> function
+		*/
 	</script>
 </body>
 </html>
