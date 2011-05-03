@@ -11,19 +11,19 @@
 	
 	**************************************************************************
 	
-	Ê¹ÓÃÊ¾Àı£º
+	ä½¿ç”¨ç¤ºä¾‹ï¼š
 	
-	1¡¢µ×²ã¿ò¼ÜÎªjQuery 1.5.2-min.js£¬²¢ÒıÓÃinÊ±×Ô¶¯¼ÓÔØ¡£
+	1ã€åº•å±‚æ¡†æ¶ä¸ºjQuery 1.5.2-min.jsï¼Œå¹¶å¼•ç”¨inæ—¶è‡ªåŠ¨åŠ è½½ã€‚
 	<script type="text/javascript" src="in.js" autoload="true" core="jquery 1.5.2-min.js"></script>
 	
-	2¡¢¼ÓÔØÈı¸ö´ıÖ´ĞĞµÄjavascriptÄ£¿é£¬·Ö±ğÎªmod1¡¢mod2¡¢mod3£¬ÆäÖĞmod2ÒÀÀµÓÚmod3.
+	2ã€åŠ è½½ä¸‰ä¸ªå¾…æ‰§è¡Œçš„javascriptæ¨¡å—ï¼Œåˆ†åˆ«ä¸ºmod1ã€mod2ã€mod3ï¼Œå…¶ä¸­mod2ä¾èµ–äºmod3.
 	<script type="text/javascript">
 		In.add('mod1',{path:'mod1.js',type:'js',charset:'utf-8'});
 		In.add('mod1',{path:'mod2.js',type:'js',charset:'utf-8',rely:['mod3']});
 		In.add('mod1',{path:'mod3.js',type:'js',charset:'utf-8'});
 	</script>
 	
-	3¡¢Ë³ĞòÖ´ĞĞmod1,mod2,function
+	3ã€é¡ºåºæ‰§è¡Œmod1,mod2,function
 	<script type="text/javascript">
 		In('mod1','mod2',function() {
 			alert($);
