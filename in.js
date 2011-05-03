@@ -34,8 +34,6 @@
 					__load(url,type,charset,callback);
 				},1);
 				return;
-				//callback();
-				//return;
 			}
 			return;
 		}
@@ -89,11 +87,6 @@
 	//core - analyze
 	function __analyze(array) {
 		var riverflow=[];
-		
-		//autoload the core files
-		if(__configure.autoload && __configure.core) {
-			//__load(__configure.core);
-		}
 		
 		for(var i=array.length-1;i>=0;i--) {
 			var cur=array[i];
@@ -169,7 +162,6 @@
 		
 		//autoload the core files
 		if(__configure.autoload && __configure.core) {
-			//__load(__configure.core);
 			__in();
 		}
 	}();
@@ -180,29 +172,3 @@
 	__in.add=__add;
 	this.In=__in;
 }();
-
-/*
-In.add('name',{path:'name.js',type:'js',charset:'utf-8',rely:['a','b','d']});
-In.add('jquery',{path:'http://code.jquery.com/jquery-1.5.2.js',type:'js',charset:'utf-8'});
-In.add('jquery2',{path:'http://t.douban.com/js/jquery.min.js',type:'js',charset:'utf-8'});
-In.add('jquery3',{path:'jquery.js',type:'js',charset:'utf-8'});
-In.add('a',{path:'a.js',type:'js',charset:'utf-8',rely:['d']});
-In.add('b',{path:'b.js',type:'js',charset:'utf-8',rely:['c']});
-In.add('c',{path:'c.js',type:'js',charset:'utf-8',rely:['a']});
-In.add('d',{path:'d.js',type:'js',charset:'utf-8'});
-In.add('e',{path:'e.js',charset:'utf-8',rely:['jquery3']});
-In.add('f',{path:'f.js',charset:'utf-8'});
-
-In('jquery',function() {
-	alert($);
-	window.inner='window.inner';
-},'a','f','c','b');
-In(function() {
-	alert('thread1');
-});
-In(function() {
-	alert('thread2');
-});
-*/
-
-
