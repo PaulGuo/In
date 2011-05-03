@@ -155,7 +155,8 @@
 		var myself=document.getElementsByTagName('script')[0];
 		var autoload=myself.getAttribute('autoload');
 		var core=myself.getAttribute('core');
-		if(autoload && core) {
+
+		if(autoload==='true' && core) {
 			__configure['autoload']=autoload;
 			__configure['core']=core;
 		}
