@@ -19,12 +19,13 @@
 	2、加载三个待执行的javascript模块，分别为mod1、mod2、mod3，其中mod2依赖于mod3.
 	<script type="text/javascript">
 		In.add('mod1',{path:'mod1.js',type:'js',charset:'utf-8'});
-		In.add('mod1',{path:'mod2.js',type:'js',charset:'utf-8',rely:['mod3']});
-		In.add('mod1',{path:'mod3.js',type:'js',charset:'utf-8'});
+		In.add('mod2',{path:'mod2.js',type:'js',charset:'utf-8',rely:['mod3']});
+		In.add('mod3',{path:'mod3.js',type:'js',charset:'utf-8'});
 	</script>
 	
 	3、顺序执行mod1,mod2,function
 	<script type="text/javascript">
+		//真正的加载顺序为mod1 -> mod2 -> mod3 -> function
 		In('mod1','mod2',function() {
 			alert($);
 		});
