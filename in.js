@@ -8,6 +8,9 @@
 	In.add('name',{path:'url here',type:'js',charset:'utf-8',rely:['a','b']});
 	In.exe('name','a','b',function() {...});
 	In('name','a','b',function() {...}); -> recommend!!!
+	
+	Version:0.11
+	Build:110713
 */
 
 ~function() {
