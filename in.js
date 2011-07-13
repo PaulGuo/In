@@ -11,7 +11,7 @@
 */
 
 ~function() {
-	var __head=document.getElementsByTagName('head')[0];
+	var __head=document.head||document.getElementsByTagName('head')[0];
 	var __waterfall={};
 	var __loaded={};
 	var __loading={};
