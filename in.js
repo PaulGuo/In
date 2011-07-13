@@ -11,7 +11,7 @@
 */
 
 ~function() {
-	var __head=document.head||document.getElementsByTagName('head')[0];
+	var __head=document.head || document.getElementsByTagName('head')[0];
 	var __waterfall={};
 	var __loaded={};
 	var __loading={};
@@ -91,6 +91,10 @@
 		for(var i=array.length-1;i>=0;i--) {
 			var cur=array[i];
 			if(typeof(cur)==='string') {
+				if(!__waterfall[cur]) {
+					alert('Please check your model name:'+cur);
+					continue;
+				}
 				var relylist=__waterfall[cur].rely;
 				riverflow.push(cur);
 				if(relylist) {
