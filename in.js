@@ -124,7 +124,7 @@
 			}
 		}
 		this.next=function() {
-			if(o.stackline.length==1) return;
+			if(o.stackline.length==1 || o.stackline.length<1) return;
 			o.stackline.shift();
 			o.current=o.stackline[0];
 			o.start();
