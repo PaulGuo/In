@@ -67,6 +67,7 @@
 			n.rel='stylesheet';
 			n.href=url;
 			__loaded[url]=true;
+			__loading[url]=false;
 			__head.appendChild(n);
 			if(callback) callback();
 			return;
@@ -124,6 +125,7 @@
 			} else {
 				__load('bingo',o.current,o.next,o);
 			}
+			return o;
 		}
 		this.next=function() {
 			if(o.stackline.length==1 || o.stackline.length<1) return;
