@@ -125,7 +125,6 @@
 			} else {
 				__load('bingo',o.current,o.next,o);
 			}
-			return o;
 		}
 		this.next=function() {
 			if(o.stackline.length==1 || o.stackline.length<1) return;
