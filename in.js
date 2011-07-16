@@ -26,7 +26,8 @@
 		if(typeof(arguments[0])==='string' && arguments[0]==='bingo') {
 			var fn=arguments[1];
 			var cb=arguments[2];
-			if(fn) fn();
+			var o=arguments[3];
+			if(fn) o.returns.push(fn());
 			if(cb) cb();
 			return;
 		}
@@ -116,11 +117,12 @@
 		var o=this;
 		this.stackline=blahlist;
 		this.current=this.stackline[0];
+		this.returns=[];
 		this.start=function() {
 			if(typeof(o.current)!='function' && __waterfall[o.current]) {
 				__load(__waterfall[o.current].path,__waterfall[o.current].type,__waterfall[o.current].charset,o.next);
 			} else {
-				__load('bingo',o.current,o.next);
+				__load('bingo',o.current,o.next,o);
 			}
 		}
 		this.next=function() {
@@ -149,12 +151,13 @@
 		}
 		
 		var blahlist=__analyze(args).reverse();
-
+		
 		//console.log(blahlist);
 		//console.log(__waterfall);
 		
 		var stack=new stackline(blahlist);
 		stack.start();
+		return stack.returns;
 	};
 	
 	//contentLoaded
