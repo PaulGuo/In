@@ -27,7 +27,7 @@
 			var fn=arguments[1];
 			var cb=arguments[2];
 			var o=arguments[3];
-			if(fn) o.returns.push(fn());
+			if(fn) o.bag.returns.push(fn());
 			if(cb) cb();
 			return;
 		}
@@ -118,8 +118,7 @@
 		var o=this;
 		this.stackline=blahlist;
 		this.current=this.stackline[0];
-		this.returns=[];
-		this.complete=false;
+		this.bag={returns:[],complete:false};
 		this.start=function() {
 			if(typeof(o.current)!='function' && __waterfall[o.current]) {
 				__load(__waterfall[o.current].path,__waterfall[o.current].type,__waterfall[o.current].charset,o.next);
@@ -129,7 +128,7 @@
 		}
 		this.next=function() {
 			if(o.stackline.length==1 || o.stackline.length<1) {
-				o.complete=true;
+				o.bag.complete=true;
 				return;
 			}
 			o.stackline.shift();
@@ -162,7 +161,7 @@
 		
 		var stack=new stackline(blahlist);
 		stack.start();
-		return {returns:stack.returns,complete:stack.complete};
+		return stack.bag;
 	};
 	
 	//contentLoaded
@@ -208,7 +207,10 @@
 	//in - watch
 	var __watch=function(obj,prop,handler) {
 		if(obj.watch) {//FF
-			obj.watch(prop,handler);
+			obj.watch(prop,function(prop,val,newval) {
+				handler(prop,val,newval);
+				return newval;
+			});
 		} else {
 			obj.__proto__=obj.__proto__||{};//fix for ie
 			obj.__proto__.watch=function() {
