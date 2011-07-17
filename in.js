@@ -8,9 +8,10 @@
 	In.add('name',{path:'url here',type:'js',charset:'utf-8',rely:['a','b']});
 	In.exe('name','a','b',function() {...});
 	In('name','a','b',function() {...}); -> recommend!!!
+	In.ready('name','a','b',function() {...});
 	
-	Version:0.11
-	Build:110713
+	Version:0.12
+	Build:110717
 */
 
 ~function() {
