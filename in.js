@@ -230,16 +230,17 @@
 						Object.prototype.__defineGetter__.call(obj,prop,getter);
 						Object.prototype.__defineSetter__.call(obj,prop,setter);
 					} else {//IE
-					obj.__intervalStamp=setInterval(function() {
-						var val=_this.oldValue,o=obj,p=prop;
-						return function() {
-							var newval=o[p];
-							if(val!=newval) {
-								handler.call(obj,prop,val,newval);
-								val=newval;
+						obj.__intervalStamp=setInterval(function() {
+							var val=_this.oldValue,o=obj,p=prop;
+							return function() {
+								var newval=o[p];
+								if(val!=newval) {
+									handler.call(obj,prop,val,newval);
+									val=newval;
+								}
 							}
-						}
-					}(),100);
+						}(),100);
+					}
 			}();
 		}
 	}
