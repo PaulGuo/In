@@ -218,8 +218,8 @@
 						_this.oldValue=newval;
 						return val=handler.call(obj,prop,val,newval);
 					};
-				try {
-					if(Object.defineProperty) { //can't watch constants
+					
+					if(!/*@cc_on!@*/0 && Object.defineProperty) { //can't watch constants
 						if(Object.defineProperty) { //ECMAScript 5
 							Object.defineProperty(obj,prop,{ //Chrome Safari
 								get:getter,
@@ -229,8 +229,7 @@
 					} else if (Object.prototype.__defineGetter__ && Object.prototype.__defineSetter__) { //legacy Opera
 						Object.prototype.__defineGetter__.call(obj,prop,getter);
 						Object.prototype.__defineSetter__.call(obj,prop,setter);
-					}
-				} catch(e) {//IE
+					} else {//IE
 					obj.__intervalStamp=setInterval(function() {
 						var val=_this.oldValue,o=obj,p=prop;
 						return function() {
@@ -241,7 +240,6 @@
 							}
 						}
 					}(),100);
-				}
 			}();
 		}
 	}
