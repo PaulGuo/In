@@ -1,5 +1,6 @@
 /*
 	Author:Guokai
+	Email/Gtalk:badkaikai@gmail.com
 	Datetime:2011-04-28
 	Namespace:window.In
 	Description:this a model that can manage multi-thread javascript loading...
