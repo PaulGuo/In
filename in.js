@@ -119,6 +119,7 @@
 		this.stackline=blahlist;
 		this.current=this.stackline[0];
 		this.returns=[];
+		this.complete=false;
 		this.start=function() {
 			if(typeof(o.current)!='function' && __waterfall[o.current]) {
 				__load(__waterfall[o.current].path,__waterfall[o.current].type,__waterfall[o.current].charset,o.next);
@@ -127,7 +128,10 @@
 			}
 		}
 		this.next=function() {
-			if(o.stackline.length==1 || o.stackline.length<1) return;
+			if(o.stackline.length==1 || o.stackline.length<1) {
+				o.complete=true;
+				return;
+			}
 			o.stackline.shift();
 			o.current=o.stackline[0];
 			o.start();
@@ -158,7 +162,7 @@
 		
 		var stack=new stackline(blahlist);
 		stack.start();
-		return stack.returns;
+		return {returns:stack.returns,complete:stack.complete};
 	};
 	
 	//contentLoaded
