@@ -201,6 +201,63 @@
 		});
 	}
 	
+	//in - watch
+	var __watch=function(obj,prop,handler) {
+		if(obj.watch) {//FF
+			obj.watch(prop,handler);
+		} else {
+			obj.__proto__=obj.__proto__||{};//fix for ie
+			obj.__proto__.watch=function() {
+				var _this=this;_this.oldValue=obj[prop];
+					getter=function() {
+						var val=_this.oldValue;
+						return val;
+					},
+					setter=function(newval) {
+						var val=_this.oldValue;
+						_this.oldValue=newval;
+						return val=handler.call(obj,prop,val,newval);
+					};
+				try {
+					if(Object.defineProperty) { //can't watch constants
+						if(Object.defineProperty) { //ECMAScript 5
+							Object.defineProperty(obj,prop,{ //Chrome Safari
+								get:getter,
+								set:setter
+							});
+						}
+					} else if (Object.prototype.__defineGetter__ && Object.prototype.__defineSetter__) { //legacy Opera
+						Object.prototype.__defineGetter__.call(obj,prop,getter);
+						Object.prototype.__defineSetter__.call(obj,prop,setter);
+					}
+				} catch(e) {//IE
+					obj.__intervalStamp=setInterval(function() {
+						var val=_this.oldValue,o=obj,p=prop;
+						return function() {
+							var newval=o[p];
+							if(val!=newval) {
+								handler.call(obj,prop,val,newval);
+								val=newval;
+							}
+						}
+					}(),100);
+				}
+			}();
+		}
+	}
+	
+	//in - unwatch
+	var __unwatch=function(obj,prop) {
+		if(obj.unwatch) {
+			obj.unwatch(prop);
+		} else {
+			var val=obj[prop];
+			delete obj[prop];
+			obj[prop]=val;
+			if(obj.__intervalStamp) clearInterval(obj.__intervalStamp);
+		}
+	}
+	
 	//in - initialize
 	~function() {
 		var myself=document.getElementsByTagName('script')[0];
@@ -223,5 +280,7 @@
 	__in.load=__load;
 	__in.add=__add;
 	__in.ready=__ready;
+	__in.watch=__watch;
+	__in.unwatch=__unwatch;
 	this.In=__in;
 }();
