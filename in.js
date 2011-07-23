@@ -158,9 +158,6 @@
 		
 		var blahlist=__analyze(args).reverse();
 		
-		//console.log(blahlist);
-		//console.log(__waterfall);
-		
 		var stack=new stackline(blahlist);
 		stack.start();
 		return stack.bag;
@@ -208,60 +205,72 @@
 	
 	//in - watch
 	var __watch=function(obj,prop,handler) {
-		if(obj.watch) {//FF
-			obj.watch(prop,function(prop,val,newval) {
-				handler(prop,val,newval);
-				return newval;
+		if(obj.watch) { //Firefox
+			obj.watch(prop,function(prop,oldValue,newValue) {
+				handler(prop,oldValue,newValue);
+				return newValue;
 			});
 		} else {
-			obj.__proto__=obj.__proto__||{};//fix for ie
-			obj.__proto__.watch=function() {
-				var _this=this;_this.oldValue=obj[prop];
-					getter=function() {
-						var val=_this.oldValue;
-						return val;
-					},
-					setter=function(newval) {
-						var val=_this.oldValue;
-						_this.oldValue=newval;
-						return val=handler.call(obj,prop,val,newval);
-					};
-					
-					if(!/*@cc_on!@*/0 && Object.defineProperty) { //can't watch constants
-						if(Object.defineProperty) { //ECMAScript 5
-							Object.defineProperty(obj,prop,{ //Chrome Safari
-								get:getter,
-								set:setter
-							});
-						}
-					} else if (Object.prototype.__defineGetter__ && Object.prototype.__defineSetter__) { //legacy Opera
-						Object.prototype.__defineGetter__.call(obj,prop,getter);
-						Object.prototype.__defineSetter__.call(obj,prop,setter);
-					} else {//IE
-						obj.__intervalStamp=setInterval(function() {
-							var val=_this.oldValue,o=obj,p=prop;
-							return function() {
-								var newval=o[p];
-								if(val!=newval) {
-									handler.call(obj,prop,val,newval);
-									val=newval;
-								}
-							}
-						}(),100);
+			~function() {
+				obj._watching=obj._watching||{};
+				obj._watching[prop]=obj._watching[prop]||{};
+				_this=obj._watching[prop];
+				_this.oldValue=obj[prop];
+				
+				var getter=function() {
+					var value=_this.oldValue;
+					return value;
+				},
+				setter=function(newValue) {
+					var oldValue=_this.oldValue;
+					_this.oldValue=newValue;
+					return value=handler.call(obj,prop,oldValue,newValue);
+				};
+				
+				if(!/*@cc_on!@*/0 && Object.defineProperty) { //can't watch constants
+					if(Object.defineProperty) { //ECMAScript 5
+						Object.defineProperty(obj,prop,{ //Chrome Safari
+							get:getter,
+							set:setter
+						});
 					}
+				} else if (Object.prototype.__defineGetter__ && Object.prototype.__defineSetter__) { //legacy Opera
+					Object.prototype.__defineGetter__.call(obj,prop,getter);
+					Object.prototype.__defineSetter__.call(obj,prop,setter);
+				} else { //IE
+					__unwatch(obj,prop,true); //avoid duplicate watching
+					_this._intervalStamp=setInterval(function() {
+						var oldValue=_this.oldValue,o=obj,p=prop;
+						return function() {
+							var newValue=o[p];
+							if(oldValue!=newValue) {
+								handler.call(obj,prop,oldValue,newValue);
+								oldValue=newValue;
+							}
+						}
+					}(),100);
+				}
 			}();
 		}
 	}
 	
 	//in - unwatch
-	var __unwatch=function(obj,prop) {
+	var __unwatch=function(obj,prop,skin_deep) {
 		if(obj.unwatch) {
 			obj.unwatch(prop);
 		} else {
-			var val=obj[prop];
-			delete obj[prop];
-			obj[prop]=val;
-			if(obj.__intervalStamp) clearInterval(obj.__intervalStamp);
+			if(obj._watching) {
+				var _this=obj._watching[prop];
+			}
+			try { //fix delete window.prop under ie6
+				var value=obj[prop];
+				delete obj[prop];
+				obj[prop]=value;
+			} catch(e) {}
+			if(_this && _this._intervalStamp) {
+				clearInterval(_this._intervalStamp);
+				!skin_deep && delete obj._watching[prop];
+			}
 		}
 	}
 	
