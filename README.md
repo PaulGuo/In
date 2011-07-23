@@ -7,7 +7,7 @@
 |_____|_| |_|  v0.12 build 110723
 </pre>
 
-#### About the author
+About the author
 ---------------------
 
 <pre>
@@ -16,7 +16,7 @@ Beijing - Chaoyang
 http://benben.cc/
 </pre>
 
-#### Overview the In.js
+Overview the In.js
 -----------------------
 
 <pre>
@@ -29,19 +29,19 @@ most important,you can load them on-demand,asynchronous and multi-threaded...
 License: Apache License,Version 2.0
 </pre>
 
-#### Usage:
+Usage:
 -----------
 
-<code>
+<pre><code>
 In.add('name',{path:'url here',type:'js',charset:'utf-8',rely:['a','b']});
 In.exe('name','a','b',function() {...});
 In('name','a','b',function() {...}); -> recommended usage equivalent to In.exe()
 In.ready('name','a','b',function() {...});
 In.watch(o,'p',function(prop,old,new) {...});
 In.unwatch(o,'p');
-</code>
+</code></pre>
 
-#### Release:
+Release:
 -------------
 
 <pre>
