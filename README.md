@@ -8,13 +8,18 @@
 </pre>
 
 #### About the author
+---------------------
 
+<pre>
 Guokai,1988-08-08
 Beijing - Chaoyang
 http://benben.cc/
+</pre>
 
 #### Overview the In.js
+-----------------------
 
+<pre>
 Author: Guokai
 Email/Gtalk: badkaikai@gmail.com
 Create Datetime: 2011-04-28
@@ -22,8 +27,10 @@ Namespace: window.In
 Description: this a light framework that can manage dependency of the modules,
 most important,you can load them on-demand,asynchronous and multi-threaded...
 License: Apache License,Version 2.0
+</pre>
 
 #### Usage:
+-----------
 
 <code>
 In.add('name',{path:'url here',type:'js',charset:'utf-8',rely:['a','b']});
@@ -35,6 +42,7 @@ In.unwatch(o,'p');
 </code>
 
 #### Release:
+-------------
 
 <pre>
 Version: 0.12
@@ -44,6 +52,7 @@ Build: 110723
 **************************************************************************
 
 #### 使用示例：
+--------------
 
 *1、import In.js to your webpage*
 
