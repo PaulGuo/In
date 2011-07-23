@@ -1,18 +1,22 @@
 /*
-	Author:Guokai
-	Email/Gtalk:badkaikai@gmail.com
-	Datetime:2011-04-28
-	Namespace:window.In
-	Description:this a model that can manage multi-thread javascript loading...
+	Author: Guokai
+	Email/Gtalk: badkaikai@gmail.com
+	Datetime: 2011-04-28
+	Namespace: window.In
+	Description: this a light framework that can manage dependency of the modules,
+	most important,you can load them on-demand,asynchronous and multi-threaded...
+	License: Apache License,Version 2.0
 	
 	Usage:
 	In.add('name',{path:'url here',type:'js',charset:'utf-8',rely:['a','b']});
 	In.exe('name','a','b',function() {...});
-	In('name','a','b',function() {...}); -> recommend!!!
+	In('name','a','b',function() {...}); -> recommended usage equivalent to In.exe()
 	In.ready('name','a','b',function() {...});
+	In.watch(o,'p',function(prop,old,new) {...});
+	In.unwatch(o,'p');
 	
-	Version:0.12
-	Build:110717
+	Version: 0.12
+	Build: 110723
 */
 
 ~function() {
