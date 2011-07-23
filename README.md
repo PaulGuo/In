@@ -13,7 +13,7 @@ About the author
 <pre>
 Guokai,1988-08-08
 Beijing - Chaoyang
-http://benben.cc/
+[Benben Blog](http://benben.cc/)
 </pre>
 
 Overview the In.js
