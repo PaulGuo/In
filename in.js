@@ -16,7 +16,7 @@
 	In.unwatch(o,'p');
 	
 	Version: 0.12
-	Build: 110723
+	Build: 110808
 */
 
 ~function() {
@@ -37,7 +37,7 @@
 			if(cb) cb();
 			return;
 		}
-	
+		
 		if(__loading[url]) {
 			if(callback) {
 				setTimeout(function() {
@@ -58,7 +58,7 @@
 		__loading[url]=true;
 		
 		var n,t=type||url.toLowerCase().substring(url.lastIndexOf('.')+1);
-
+		
 		if(t==='js') {
 			n=document.createElement('script');
 			n.type='text/javascript';
@@ -94,7 +94,7 @@
 	
 		__head.appendChild(n);
 	};
-
+	
 	//core - analyze
 	function __analyze(array) {
 		var riverflow=[];
@@ -142,7 +142,7 @@
 			o.start();
 		}
 	}
-
+	
 	//in - add
 	var __add=function(name,config) {
 		if(!name || !config || !config.path) return;
@@ -280,10 +280,10 @@
 	
 	//in - initialize
 	~function() {
-		var myself=document.getElementsByTagName('script')[0];
+		var myself=[].slice.call(document.getElementsByTagName('script')).pop();
 		var autoload=myself.getAttribute('autoload');
 		var core=myself.getAttribute('core');
-
+		
 		if(autoload==='true' && core) {
 			__configure['autoload']=autoload;
 			__configure['core']=core;
