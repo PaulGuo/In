@@ -280,7 +280,10 @@
 	
 	//in - initialize
 	~function() {
-		var myself=[].slice.call(document.getElementsByTagName('script')).pop();
+		var myself=(function() {
+			var scripts=document.getElementsByTagName('script');
+			return scripts[scripts.length-1];
+		})();
 		var autoload=myself.getAttribute('autoload');
 		var core=myself.getAttribute('core');
 		
