@@ -57,7 +57,8 @@
 		
 		__loading[url]=true;
 		
-		var n,t=type||url.toLowerCase().substring(url.lastIndexOf('.')+1);
+		var pureurl=url.split('?')[0];
+		var n,t=type||pureurl.toLowerCase().substring(pureurl.lastIndexOf('.')+1);
 		
 		if(t==='js') {
 			n=document.createElement('script');
