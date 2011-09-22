@@ -16,7 +16,7 @@
 	In.unwatch(o,'p');
 	
 	Version: 0.12
-	Build: 110808
+	Build: 110922
 */
 
 ~function() {
