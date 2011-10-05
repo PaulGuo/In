@@ -1,22 +1,12 @@
 /*
-	Author: Guokai
-	Email/Gtalk: badkaikai@gmail.com
-	Datetime: 2011-04-28
-	Namespace: window.In
-	Description: this a light framework that can manage dependency of the modules,
-	most important,you can load them on-demand,asynchronous and multi-threaded...
-	License: Apache License,Version 2.0
+	@author: guokai
+	@email/gtalk: badkaikai@gmail.com
+	@blog/website: http://benben.cc
+	@license: apache license,version 2.0
 	
-	Usage:
-	In.add('name',{path:'url here',type:'js',charset:'utf-8',rely:['a','b']});
-	In.exe('name','a','b',function() {...});
-	In('name','a','b',function() {...}); -> recommended usage equivalent to In.exe()
-	In.ready('name','a','b',function() {...});
-	In.watch(o,'p',function(prop,old,new) {...});
-	In.unwatch(o,'p');
-	
-	Version: 0.1.4
-	Build: 111005
+	@usage:http://paulguo.github.com/In
+	@version: 0.1.5
+	@build: 110428111005
 */
 
 ~function() {
@@ -38,6 +28,7 @@
 			}
 			return;
 		}
+		
 		if(__loaded[url]) {
 			if(callback) {
 				callback();
@@ -187,10 +178,10 @@
 			init('poll');
 		};
 		
-		if (doc.readyState=='complete') {
+		if(doc.readyState=='complete') {
 			fn.call(win,'lazy');
 		} else {
-			if (doc.createEventObject && root.doScroll) {
+			if(doc.createEventObject && root.doScroll) {
 				try {top=!win.frameElement;} catch(e) {}
 				if(top) poll();
 			}
@@ -207,78 +198,7 @@
 			__in.apply(this,args);
 		});
 	}
-	
-	//in - watch
-	var __watch=function(obj,prop,handler) {
-		if(obj.watch) { //Firefox
-			obj.watch(prop,function(prop,oldValue,newValue) {
-				handler(prop,oldValue,newValue);
-				return newValue;
-			});
-		} else {
-			~function() {
-				obj._watching=obj._watching||{};
-				obj._watching[prop]=obj._watching[prop]||{};
-				_this=obj._watching[prop];
-				_this.oldValue=obj[prop];
-				
-				var getter=function() {
-					var value=_this.oldValue;
-					return value;
-				},
-				setter=function(newValue) {
-					var oldValue=_this.oldValue;
-					_this.oldValue=newValue;
-					return value=handler.call(obj,prop,oldValue,newValue);
-				};
-				
-				if(!/*@cc_on!@*/0 && Object.defineProperty) { //can't watch constants
-					if(Object.defineProperty) { //ECMAScript 5
-						Object.defineProperty(obj,prop,{ //Chrome Safari
-							get:getter,
-							set:setter
-						});
-					}
-				} else if (Object.prototype.__defineGetter__ && Object.prototype.__defineSetter__) { //legacy Opera
-					Object.prototype.__defineGetter__.call(obj,prop,getter);
-					Object.prototype.__defineSetter__.call(obj,prop,setter);
-				} else { //IE
-					__unwatch(obj,prop,true); //avoid duplicate watching
-					_this._intervalStamp=setInterval(function() {
-						var oldValue=_this.oldValue,o=obj,p=prop;
-						return function() {
-							var newValue=o[p];
-							if(oldValue!=newValue) {
-								handler.call(obj,prop,oldValue,newValue);
-								oldValue=newValue;
-							}
-						}
-					}(),100);
-				}
-			}();
-		}
-	}
-	
-	//in - unwatch
-	var __unwatch=function(obj,prop,skin_deep) {
-		if(obj.unwatch) {
-			obj.unwatch(prop);
-		} else {
-			if(obj._watching) {
-				var _this=obj._watching[prop];
-			}
-			try { //fix delete window.prop under ie6
-				var value=obj[prop];
-				delete obj[prop];
-				obj[prop]=value;
-			} catch(e) {}
-			if(_this && _this._intervalStamp) {
-				clearInterval(_this._intervalStamp);
-				!skin_deep && delete obj._watching[prop];
-			}
-		}
-	}
-	
+		
 	//in - initialize
 	~function() {
 		var myself=(function() {
@@ -304,7 +224,5 @@
 	__in.load=__load;
 	__in.add=__add;
 	__in.ready=__ready;
-	__in.watch=__watch;
-	__in.unwatch=__unwatch;
 	this.In=__in;
 }();
