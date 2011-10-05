@@ -4,7 +4,8 @@
 	@blog/website: http://benben.cc
 	@license: apache license,version 2.0
 	
-	@usage:http://paulguo.github.com/In
+	@usage: http://paulguo.github.com/In
+	@philosophy: just in time.
 	@version: 0.1.7
 	@build: 110428111005
 */
