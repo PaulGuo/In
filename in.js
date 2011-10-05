@@ -15,8 +15,8 @@
 	In.watch(o,'p',function(prop,old,new) {...});
 	In.unwatch(o,'p');
 	
-	Version: 0.12
-	Build: 110922
+	Version: 0.1.3
+	Build: 111004
 */
 
 ~function() {
@@ -27,17 +27,8 @@
 	var __configure={};
 	var __in;
 	
-	//core - load
-	var __load=function(url,type,charset,callback) {
-		if(typeof(arguments[0])==='string' && arguments[0]==='bingo') {
-			var fn=arguments[1];
-			var cb=arguments[2];
-			var o=arguments[3];
-			if(fn) o.bag.returns.push(fn());
-			if(cb) cb();
-			return;
-		}
-		
+	//in - load
+	var __load=function(url,type,charset,callback) {		
 		if(__loading[url]) {
 			if(callback) {
 				setTimeout(function() {
@@ -92,36 +83,40 @@
 				n.onload=n.onreadystatechange=null;
 			}
 		};
+
+		n.onerror=function() {
+			__loading[url]=false;
+			
+			if(callback) {
+				callback();
+			}
+			
+			n.onerror=null;
+		}
 	
 		__head.appendChild(n);
 	};
 	
-	//core - analyze
-	function __analyze(array) {
+	//in - analyze
+	var __analyze=function(array) {
 		var riverflow=[];
-		
 		for(var i=array.length-1;i>=0;i--) {
-			var cur=array[i];
-			if(typeof(cur)==='string') {
-				if(!__waterfall[cur]) {
-					alert('Please check your model name:'+cur);
+			var current=array[i];
+			riverflow.push(current);
+			if(typeof(current)==='string') {
+				if(!__waterfall[current]) {
+					console && console.warn('model not found:'+current);
 					continue;
 				}
-				var relylist=__waterfall[cur].rely;
-				riverflow.push(cur);
-				if(relylist) {
-					riverflow=riverflow.concat(__analyze(relylist));
-				}
-			} else if(typeof(cur)==='function') {
-				riverflow.push(cur);
+				var relylist=__waterfall[current].rely;
+				if(relylist) riverflow=riverflow.concat(__analyze(relylist));
 			}
 		}
-		
 		return riverflow;
 	}
 	
-	//in - product process line
-	function stackline(blahlist) {
+	//in - process
+	var __stackline=function(blahlist) {
 		var o=this;
 		this.stackline=blahlist;
 		this.current=this.stackline[0];
@@ -130,12 +125,16 @@
 			if(typeof(o.current)!='function' && __waterfall[o.current]) {
 				__load(__waterfall[o.current].path,__waterfall[o.current].type,__waterfall[o.current].charset,o.next);
 			} else {
-				__load('bingo',o.current,o.next,o);
+				o.bag.returns.push(o.current());
+				o.next();
 			}
 		}
 		this.next=function() {
 			if(o.stackline.length==1 || o.stackline.length<1) {
 				o.bag.complete=true;
+				if(o.bag.oncomplete) {
+					o.bag.oncomplete(o.bag.returns);
+				}
 				return;
 			}
 			o.stackline.shift();
@@ -150,9 +149,8 @@
 		__waterfall[name]=config;
 	}
 	
-	//in - public
+	//in - main
 	var __in=function() {
-		//empty
 		var args=[].slice.call(arguments);
 		
 		//autoload the core files
@@ -162,14 +160,14 @@
 		}
 		
 		var blahlist=__analyze(args).reverse();
-		
-		var stack=new stackline(blahlist);
+		var stack=new __stackline(blahlist);
+
 		stack.start();
 		return stack.bag;
 	};
 	
-	//contentLoaded
-	function contentLoaded(win,fn) {
+	//in - contentLoaded
+	var __contentLoaded=function(win,fn) {
 		var done=false,top=true,
 		doc=win.document,root=doc.documentElement,
 		add=doc.addEventListener ? 'addEventListener':'attachEvent',
@@ -203,7 +201,7 @@
 	//in - ready
 	var __ready=function() {
 		var args=arguments;
-		contentLoaded(window,function() {
+		__contentLoaded(window,function() {
 			__in.apply(this,args);
 		});
 	}
@@ -299,7 +297,7 @@
 		}
 	}();
 	
-	//bind the method
+	//in - bind the method
 	__in.exe=__in;
 	__in.load=__load;
 	__in.add=__add;
