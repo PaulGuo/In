@@ -15,8 +15,8 @@
 	In.watch(o,'p',function(prop,old,new) {...});
 	In.unwatch(o,'p');
 	
-	Version: 0.1.3
-	Build: 111004
+	Version: 0.1.4
+	Build: 111005
 */
 
 ~function() {
@@ -102,14 +102,16 @@
 		var riverflow=[];
 		for(var i=array.length-1;i>=0;i--) {
 			var current=array[i];
-			riverflow.push(current);
 			if(typeof(current)==='string') {
 				if(!__waterfall[current]) {
 					console && console.warn('model not found:'+current);
 					continue;
 				}
+				riverflow.push(current);
 				var relylist=__waterfall[current].rely;
 				if(relylist) riverflow=riverflow.concat(__analyze(relylist));
+			} else if(typeof(current)==='function') {
+				riverflow.push(current);
 			}
 		}
 		return riverflow;
