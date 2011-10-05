@@ -5,7 +5,7 @@
 	@license: apache license,version 2.0
 	
 	@usage:http://paulguo.github.com/In
-	@version: 0.1.6
+	@version: 0.1.7
 	@build: 110428111005
 */
 
@@ -14,7 +14,7 @@
 	var __waterfall={};
 	var __loaded={};
 	var __loading={};
-	var __configure={};
+	var __configure={autoload:false,core:'',serial:true};
 	var __in;
 	
 	//in - load
@@ -152,11 +152,33 @@
 			args=['__core'].concat(args);
 		}
 		
-		var blahlist=__analyze(args).reverse();
-		var stack=new __stackline(blahlist);
-
-		stack.start();
-		return stack.bag;
+		if(__configure.serial) {
+			var blahlist=__analyze(args).reverse();
+			var stack=new __stackline(blahlist);
+			
+			stack.start();
+			return stack.bag;
+		}
+		
+		if(typeof(args[args.length-1])==='function') {
+			var callback=args.pop();
+			var len=args.length;
+			var bag={returns:null,complete:false};
+		}
+		
+		for(var i=0;i<args.length;i++) {
+			var blahlist=__analyze([args[i]]).reverse();
+			__waterfall['__core'] && blahlist.unshift('__core');
+			callback && blahlist.push(function() {
+				if(!--len) {
+					bag.returns=callback();
+					bag.complete=true;
+				}
+			});
+			new __stackline(blahlist).start();
+		}
+		
+		return bag;
 	};
 	
 	//in - contentLoaded
@@ -198,6 +220,38 @@
 			__in.apply(this,args);
 		});
 	}
+	
+	//in - config
+	var __config=function(name,conf) {
+		__configure[name]=conf;
+	}
+	
+	//in - inline css
+	var __css=function(csstext) {
+		var css=document.getElementById('in-inline-css');
+		
+		if(!css) {
+			css=document.createElement('style');
+			css.type='text/css';
+			css.id='in-inline-css';
+			__head.appendChild(css);
+		}
+		
+		if(css.styleSheet) {
+			css.styleSheet.cssText=css.styleSheet.cssText+csstext;
+		} else {
+			css.appendChild(document.createTextNode(csstext));
+		}
+	};
+	
+	//in - later
+	var __later=function() {
+		var args=[].slice.call(arguments);
+		var timeout=args.shift();
+		window.setTimeout(function() {
+			__in.apply(this,args);
+		},timeout);
+	}
 		
 	//in - initialize
 	void function() {
@@ -224,5 +278,8 @@
 	__in.load=__load;
 	__in.add=__add;
 	__in.ready=__ready;
+	__in.config=__config;
+	__in.css=__css;
+	__in.later=__later;
 	this.In=__in;
 }();
