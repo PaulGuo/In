@@ -5,7 +5,7 @@
 	@license: apache license,version 2.0
 	
 	@usage:http://paulguo.github.com/In
-	@version: 0.1.5
+	@version: 0.1.6
 	@build: 110428111005
 */
 
@@ -200,7 +200,7 @@
 	}
 		
 	//in - initialize
-	~function() {
+	void function() {
 		var myself=(function() {
 			var scripts=document.getElementsByTagName('script');
 			return scripts[scripts.length-1];
