@@ -15,7 +15,7 @@
 	var __waterfall={};
 	var __loaded={};
 	var __loading={};
-	var __configure={autoload:false,core:'',serial:false};
+	var __configure={autoload:false,core:'',serial:true};
 	var __in;
 	
 	//in - load
