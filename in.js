@@ -7,7 +7,7 @@
 	@usage: http://paulguo.github.com/In
 	@philosophy: just in time.
 	@version: 0.1.7
-	@build: 110428111005
+	@build: 110428111006
 */
 
 ~function() {
@@ -15,7 +15,7 @@
 	var __waterfall={};
 	var __loaded={};
 	var __loading={};
-	var __configure={autoload:false,core:'',serial:true};
+	var __configure={autoload:false,core:'',serial:false};
 	var __in;
 	
 	//in - load
@@ -143,6 +143,46 @@
 		__waterfall[name]=config;
 	}
 	
+	//in - config
+	var __config=function(name,conf) {
+		__configure[name]=conf;
+	}
+	
+	//in - inline css
+	var __css=function(csstext) {
+		var css=document.getElementById('in-inline-css');
+		
+		if(!css) {
+			css=document.createElement('style');
+			css.type='text/css';
+			css.id='in-inline-css';
+			__head.appendChild(css);
+		}
+		
+		if(css.styleSheet) {
+			css.styleSheet.cssText=css.styleSheet.cssText+csstext;
+		} else {
+			css.appendChild(document.createTextNode(csstext));
+		}
+	};
+	
+	//in - later
+	var __later=function() {
+		var args=[].slice.call(arguments);
+		var timeout=args.shift();
+		window.setTimeout(function() {
+			__in.apply(this,args);
+		},timeout);
+	}
+	
+	//in - ready
+	var __ready=function() {
+		var args=arguments;
+		__contentLoaded(window,function() {
+			__in.apply(this,args);
+		});
+	}
+	
 	//in - main
 	var __in=function() {
 		var args=[].slice.call(arguments);
@@ -214,46 +254,6 @@
 		}
 	}
 	
-	//in - ready
-	var __ready=function() {
-		var args=arguments;
-		__contentLoaded(window,function() {
-			__in.apply(this,args);
-		});
-	}
-	
-	//in - config
-	var __config=function(name,conf) {
-		__configure[name]=conf;
-	}
-	
-	//in - inline css
-	var __css=function(csstext) {
-		var css=document.getElementById('in-inline-css');
-		
-		if(!css) {
-			css=document.createElement('style');
-			css.type='text/css';
-			css.id='in-inline-css';
-			__head.appendChild(css);
-		}
-		
-		if(css.styleSheet) {
-			css.styleSheet.cssText=css.styleSheet.cssText+csstext;
-		} else {
-			css.appendChild(document.createTextNode(csstext));
-		}
-	};
-	
-	//in - later
-	var __later=function() {
-		var args=[].slice.call(arguments);
-		var timeout=args.shift();
-		window.setTimeout(function() {
-			__in.apply(this,args);
-		},timeout);
-	}
-		
 	//in - initialize
 	void function() {
 		var myself=(function() {
@@ -275,12 +275,12 @@
 	}();
 	
 	//in - bind the method
-	__in.exe=__in;
-	__in.load=__load;
 	__in.add=__add;
-	__in.ready=__ready;
 	__in.config=__config;
 	__in.css=__css;
 	__in.later=__later;
+	__in.load=__load;
+	__in.ready=__ready;
+	__in.use=__in;
 	this.In=__in;
 }();
