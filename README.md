@@ -75,18 +75,16 @@ Examples：
 
 *3、In() or In.use()*
 
-顺序执行mod1,mod2,function，立即执行
+旧版本队列内为顺序加载，如需向后兼容，请事先配置In.config('serial',true)更换为默认串行加载，新版本的队列默认为并行执行，队列中最后一个函数被视为回调函数，下面的代码会并行加载mod1,mod2,function，并立即执行，三者均加载完毕后执行回调函数。
 
 <pre>
 &lt;script type="text/javascript"&gt;
-	//真正的加载顺序为 mod1 -> mod2 -> mod3 -> function -> function
+	//真正的加载顺序为 mod1 || mod2 || function -> function[callback]
 	var demo=In('mod1','mod2',function() {
-		alert('no return value');
+		console.log('我跟mod1和mod2是并行的关系');
 	},function() {
-		alert($);
-		return 'hello';
+		console.log('我是回调函数，他们都加载完毕才会触发我');
 	});
-	//demo={returns:[undefined,'hello'],complete:true}
 &lt;/script&gt;
 </pre>
 
@@ -97,7 +95,7 @@ domReady之后加载队列
 <pre>
 &lt;script type="text/javascript"&gt;
 	In.ready('mod1','mod2',function() {
-		alert($);
+		console.log($);
 	});
 &lt;/script&gt;
 </pre>
@@ -108,8 +106,9 @@ domReady之后加载队列
 
 <pre>
 &lt;script type="text/javascript"&gt;
+	//延迟3秒加载队列
 	In.later(3000,'mod1','mod2',function() {
-		alert($);
+		console.log($);
 	});
 &lt;/script&gt;
 </pre>
@@ -121,5 +120,18 @@ domReady之后加载队列
 <pre>
 &lt;script type="text/javascript"&gt;
 	In.css('body {background:yellow}');
+&lt;/script&gt;
+</pre>
+
+*7、In.config()*
+
+配置函数
+
+<pre>
+&lt;script type="text/javascript"&gt;
+	//设置为串行加载模式，兼容旧的写法
+	In.config('serial',true);
+	//设置核心库，核心库会被所有模块依赖
+	In.config('core','jquery 1.5.2-min.js');
 &lt;/script&gt;
 </pre>
