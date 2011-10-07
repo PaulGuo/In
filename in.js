@@ -153,7 +153,7 @@
 			var current=__waterfall[blahlist[i]];
 			
 			if(typeof(blahlist[i])=='function') {
-				blahlist[i]() && hook();
+				blahlist[i]();hook();
 				continue;
 			}
 			
