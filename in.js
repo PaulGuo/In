@@ -109,7 +109,7 @@
 		return riverflow;
 	}
 	
-	//in - process
+	//in - serial process
 	var __stackline=function(blahlist) {
 		var o=this;
 		this.stackline=blahlist;
@@ -136,7 +136,8 @@
 			o.start();
 		}
 	}
-
+	
+	//in - parallel process
 	var __parallel=function(blahlist,callback) {
 		var len=blahlist.length;
 		var cb=function() {
@@ -206,16 +207,12 @@
 	var __in=function() {
 		var args=[].slice.call(arguments);
 		
-		//autoload the core files
-		if(__configure.core && __configure.autoload && !__loaded[__configure]) {
-			__add('__core',{path:__configure.core});
-			args=['__core'].concat(args);
-		}
-		
 		if(__configure.serial) {
+			if(__configure.core && !__loaded[__configure.core]) {
+				args=['__core'].concat(args);
+			}
 			var blahlist=__analyze(args).reverse();
 			var stack=new __stackline(blahlist);
-			
 			stack.start();
 			return stack.bag;
 		}
@@ -224,12 +221,12 @@
 			var callback=args.pop();
 		}
 		
-		if(__loaded[__configure.core]) {
-			__parallel(args,callback);
-		} else {
+		if(__configure.core && !__loaded[__configure.core]) {
 			__parallel(['__core'],function() {
 				__parallel(args,callback);
 			})
+		} else {
+			__parallel(args,callback);
 		}
 	};
 	
@@ -274,9 +271,10 @@
 		var autoload=myself.getAttribute('autoload');
 		var core=myself.getAttribute('core');
 		
-		if(autoload==='true' && core) {
-			__configure['autoload']=autoload;
+		if(core) {
+			__configure['autoload']=eval(autoload);
 			__configure['core']=core;
+			__add('__core',{path:__configure.core});
 		}
 		
 		//autoload the core files
