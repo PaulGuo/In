@@ -6,8 +6,8 @@
 	
 	@usage: http://paulguo.github.com/In
 	@philosophy: just in time.
-	@version: 0.1.7
-	@build: 110428111006
+	@version: 0.1.8
+	@build: 110428111007
 */
 
 ~function() {
@@ -136,6 +136,25 @@
 			o.start();
 		}
 	}
+
+	var __parallel=function(blahlist,callback) {
+		var len=blahlist.length;
+		var cb=function() {
+			if(!--len && callback) callback();
+		}
+		for(var i=0;i<blahlist.length;i++) {
+			var current=__waterfall[blahlist[i]];
+			if(current.rely && current.rely.length!=0) {
+				__parallel(current.rely,(function(current) {
+					return function() {
+						__load(current.path,current.type,current.charset,cb);
+					}
+				})(current));
+			} else {
+				__load(current.path,current.type,current.charset,cb);
+			}
+		}
+	}
 	
 	//in - add
 	var __add=function(name,config) {
@@ -203,23 +222,15 @@
 		
 		if(typeof(args[args.length-1])==='function') {
 			var callback=args.pop();
-			var len=args.length;
-			var bag={returns:null,complete:false};
 		}
 		
-		for(var i=0;i<args.length;i++) {
-			var blahlist=__analyze([args[i]]).reverse();
-			__waterfall['__core'] && blahlist.unshift('__core');
-			callback && blahlist.push(function() {
-				if(!--len) {
-					bag.returns=callback();
-					bag.complete=true;
-				}
-			});
-			new __stackline(blahlist).start();
+		if(__loaded[__configure.core]) {
+			__parallel(args,callback);
+		} else {
+			__parallel(['__core'],function() {
+				__parallel(args,callback);
+			})
 		}
-		
-		return bag;
 	};
 	
 	//in - contentLoaded
