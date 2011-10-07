@@ -224,7 +224,7 @@
 		if(__configure.core && !__loaded[__configure.core]) {
 			__parallel(['__core'],function() {
 				__parallel(args,callback);
-			})
+			});
 		} else {
 			__parallel(args,callback);
 		}
