@@ -139,20 +139,32 @@
 	
 	//in - parallel process
 	var __parallel=function(blahlist,callback) {
-		var len=blahlist.length;
-		var cb=function() {
-			if(!--len && callback) callback();
+		var length=blahlist.length;
+		var hook=function() {
+			if(!--length && callback) callback();
 		}
+		
+		if(length==0) {
+			callback && callback();
+			return;
+		}
+		
 		for(var i=0;i<blahlist.length;i++) {
 			var current=__waterfall[blahlist[i]];
+			
+			if(typeof(blahlist[i])=='function') {
+				blahlist[i]() && hook();
+				continue;
+			}
+			
 			if(current.rely && current.rely.length!=0) {
 				__parallel(current.rely,(function(current) {
 					return function() {
-						__load(current.path,current.type,current.charset,cb);
+						__load(current.path,current.type,current.charset,hook);
 					}
 				})(current));
 			} else {
-				__load(current.path,current.type,current.charset,cb);
+				__load(current.path,current.type,current.charset,hook);
 			}
 		}
 	}
