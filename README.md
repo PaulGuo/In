@@ -35,11 +35,12 @@ Usage:
 
 <pre><code>
 In.add('mod1',{path:'url',type:'js',charset:'utf-8',rely:['mod2','mod3']});
-In.use('mod1','mod2','mod3',function() {...});
-In('mod1','mod2','mod3',function() {...}); -> short for In.use()
-In.ready('mod1','mod2','mod3',function() {...});
-In.later(3000,'mod1','mod2','mod3',function() {...});
-In.css('...');
+In.use('mod1','mod2','mod3',function() {});
+In('mod1','mod2','mod3',function() {}); -> short for In.use()
+In.ready('mod1','mod2','mod3',function() {});
+In.later(3000,'mod1','mod2','mod3',function() {});
+In.css(inline-css);
+In.config(name,value);
 </code></pre>
 
 Release:
