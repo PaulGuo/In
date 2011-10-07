@@ -4,7 +4,7 @@
   | |  _ __  
   | | | '_ \ 
  _| |_| | | |
-|_____|_| |_|  v0.12 build 110723
+|_____|_| |_|  v0.1.8 build 110428111007
 </pre>
 
 About the author
@@ -23,6 +23,7 @@ Overview the In.js
 Author: Guokai
 Email/Gtalk: badkaikai@gmail.com
 Create Datetime: 2011-04-28
+Last Update: 2011-10-07
 Namespace: window.In
 Description: this a light framework that can manage dependency of the modules,
 most important,you can load them on-demand,asynchronous and multi-threaded...
@@ -45,8 +46,8 @@ Release:
 -------------
 
 <pre>
-Version: 0.12
-Build: 110723
+Version: 0.1.8
+Build: 110428111007
 </pre>
 
 Examples：
@@ -72,7 +73,7 @@ Examples：
 &lt;/script&gt;
 </pre>
 
-*3、In() or In.exe()*
+*3、In() or In.use()*
 
 顺序执行mod1,mod2,function，立即执行
 
@@ -101,32 +102,24 @@ domReady之后加载队列
 &lt;/script&gt;
 </pre>
 
-*5、In.watch()*
+*5、In.later()*
 
-监视某一变量值
+延迟加载队列
 
 <pre>
 &lt;script type="text/javascript"&gt;
-	var o={p:1};
-	In.watch(o,'p',function(prop,old,new) {
-		console.log(prop);
-		console.log(old);
-		console.log(new);
+	In.later(3000,'mod1','mod2',function() {
+		alert($);
 	});
-	o.p=2;
-	-----console-----
-	>'p'
-	>1
-	>2
 &lt;/script&gt;
 </pre>
 
-*6、In.unwatch()*
+*6、In.css()*
 
-取消对某一变量的监视
+动态注入CSS
 
 <pre>
 &lt;script type="text/javascript"&gt;
-	In.watch(o,'p');
+	In.css('body {background:yellow}');
 &lt;/script&gt;
 </pre>
