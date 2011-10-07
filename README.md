@@ -34,12 +34,12 @@ Usage:
 -----------
 
 <pre><code>
-In.add('name',{path:'url here',type:'js',charset:'utf-8',rely:['a','b']});
-In.exe('name','a','b',function() {...});
-In('name','a','b',function() {...}); -> recommended usage equivalent to In.exe()
-In.ready('name','a','b',function() {...});
-In.watch(o,'p',function(prop,old,new) {...});
-In.unwatch(o,'p');
+In.add('mod1',{path:'url',type:'js',charset:'utf-8',rely:['mod2','mod3']});
+In.use('mod1','mod2','mod3',function() {...});
+In('mod1','mod2','mod3',function() {...}); -> short for In.use()
+In.ready('mod1','mod2','mod3',function() {...});
+In.later(3000,'mod1','mod2','mod3',function() {...});
+In.css('...');
 </code></pre>
 
 Release:
