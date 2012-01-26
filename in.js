@@ -6,8 +6,8 @@
 	
 	@usage: http://paulguo.github.com/In
 	@philosophy: just in time.
-	@version: 0.1.8
-	@build: 110428111007
+	@version: 0.1.9
+	@build: 110428120126
 */
 
 ~function() {
@@ -175,6 +175,18 @@
 		__waterfall[name]=config;
 	}
 	
+	//in - adds
+	var __adds=function(config) {
+		if(!config.modules) return;
+		for(var module in config.modules) {
+			var module_config=config.modules[module];
+			if(!config.modules.hasOwnProperty(module)) continue;
+			if(config.type && !module_config.type) module_config.type=config.type;
+			if(config.charset && !module_config.charset) module_config.charset=config.charset;
+			__add.call(this,module,module_config);
+		}
+	}
+	
 	//in - config
 	var __config=function(name,conf) {
 		__configure[name]=conf;
@@ -297,6 +309,7 @@
 	
 	//in - bind the method
 	__in.add=__add;
+	__in.adds=__adds;
 	__in.config=__config;
 	__in.css=__css;
 	__in.later=__later;
