@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" href="stylesheets/reset.css" />
+	<link rel="stylesheet" href="stylesheets/main.css" />
+</head>
+<body>
+	<div id="logo"><a href="#!">in.js</a></div>
+
+	<div id="intro">
+		<p>in.js is a javascript loader, by using it, you can load your js/css file 
+		asynchronous and non-blocking at any time.</p>
+
+		<span class="download">
+			<a href="https://github.com/PaulGuo/In/zipball/master"><img src="images/download.png" alt="download in.js" /></a>
+			<span class="version">v2.3.1</span>
+		</span>
+
+		<p class="industry">IN.JS IN THE INDUSTRY</p>
+
+		<ul class="instance">
+			<li class="yinyuetai"><a href="http://yinyuetai.com/"><img src="images/yinyuetai-logo.png" alt="" /></a></li>
+			<li class="pianyishuo"><a href="http://pianyishuo.com/"><img src="images/pianyishuo-logo.png" alt="" /></a></li>
+			<li class="paosuan"><a href="http://paosuan.com/"><img src="images/paosuan-logo.png" alt="" /></a></li>
+		</ul>
+	</div>
+
+	<div id="example">
+		<div class="codes">
+			<h3>EXAMPLES:</h3>
+
+			<span>` Add Modules</span>
+			<pre>
+In.add('mod1',{path:'mod1.js',type:'js',charset:'utf-8'});
+In.add('mod2',{path:'mod2.js',type:'js',charset:'utf-8',rely:['mod3']});
+In.add('mod3',{path:'mod3.js',type:'js',charset:'utf-8'});</pre>
+
+			<span>` Load Modules</span>
+			<pre>
+In('mod1','mod2',function() {
+	//inline function
+},function() {
+	//callback
+});</pre>
+
+			<span>` Load Modules After DOM Ready</span>
+			<pre>
+In.ready('mod1','mod2',function() {
+	console.log($);
+});</pre>
+
+			<span>` Load Modules after 3000ms</span>
+			<pre>
+In.later(3000,'mod1','mod2',function() {
+	console.log($);
+});</pre>
+
+			<span>` Insert CSS Style Dynamic</span>
+			<pre>
+In.css('body {background:yellow}');</pre>
+		</div>
+
+		<div class="nav">
+			<ul>
+				<li><a href="#">SOURCE CODE</a></li>
+				<li><a href="#">DOCUMENTATION</a></li>
+				<li><a href="#">ABOUT</a></li>
+				<li><a href="#">COMMUNITY</a></li>
+				<li><a href="#">DEMO</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div id="footer">
+		<a href="http://benben.cc/"><img src="images/copyright.png" alt="" /></a>
+	</div>
+</body>
+</html>
