@@ -4,7 +4,7 @@
   | |  _ __  
   | | | '_ \ 
  _| |_| | | |
-|_____|_| |_|  v0.1.8 build 110428111007
+|_____|_| |_|  v0.2.0 build 110428120728
 </pre>
 
 About the author
@@ -23,7 +23,7 @@ Overview the In.js
 Author: Guokai
 Email/Gtalk: badkaikai@gmail.com
 Create Datetime: 2011-04-28
-Last Update: 2011-10-07
+Last Update: 2012-07-28
 Namespace: window.In
 Description: this a light framework that can manage dependency of the modules,
 most important,you can load them on-demand,asynchronous and multi-threaded...
@@ -47,8 +47,8 @@ Release:
 -------------
 
 <pre>
-Version: 0.1.8
-Build: 110428111007
+Version: 0.2.0
+Build: 110428120728
 </pre>
 
 Examples：
